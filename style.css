@@ -1,0 +1,31 @@
+* {
+  font-family: "PT Sans", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#nav {
+  background-color: #37474f;
+  color: #ffffff;
+  text-align: center;
+  padding: 15px;
+}
+
+#nav input {
+  margin-left: 20px;
+}
+
+#nav p:first-of-type {
+  font-size: 0.7em;
+}
+
+h2 {
+  margin: 0;
+}
+
+p {
+  margin: 4px;
+}

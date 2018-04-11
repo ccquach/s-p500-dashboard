@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>S&amp;P 500 Dashboard</title>
+  <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="nav">
+    <h2>Standard &amp; Poor's 500 Index</h2>
+    <p>Data available for date range between <span id="min-date"></span> and <span id="max-date"></span></p>
+    <p>
+      Select a Date Range:
+      <input type="radio" name="date-range" value="1" checked>
+      <label>1M</label>
+      <input type="radio" name="date-range" value="3">
+      <label>3M</label>
+      <input type="radio" name="date-range" value="6">
+      <label>6M</label>
+      <input type="radio" name="date-range" value="12">
+      <label>1Y</label>
+      <input type="radio" name="date-range" value="24">
+      <label>2Y</label>
+      <input type="radio" name="date-range" value="60">
+      <label>5Y</label>
+    </p>
+    <p>
+      <span id="start-date"></span> to <span id="end-date"></span>
+    </p>
+    <p>
+      Return on one share:
+      <span id="dollar-return"></span>
+      <span id="percent-return"></span>
+    </p>
+  </div>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="./scripts/price.js"></script>
+  <script src="./scripts/volume.js"></script>
+  <script src="./scripts/return.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
