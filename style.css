@@ -8,6 +8,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
 
 #nav {
@@ -40,7 +41,7 @@ body {
 }
 
 .chart-container {
-  flex: 1 1 80%;
+  flex: 5 0 80%;
   display: flex;
   flex-direction: column;
 }
@@ -52,5 +53,7 @@ svg {
 
 .side-nav {
   border: 2px solid black;
-  flex: 1 1 20%;
+  flex: 1 5 20%;
+  min-width: 100px;
+  max-width: 200px;
 }
