@@ -5,6 +5,9 @@
 body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #nav {
@@ -14,18 +17,40 @@ body {
   padding: 15px;
 }
 
+#nav h2 {
+  margin: 0;
+}
+
 #nav input {
   margin-left: 20px;
+}
+
+#nav p {
+  margin: 4px;
 }
 
 #nav p:first-of-type {
   font-size: 0.7em;
 }
 
-h2 {
-  margin: 0;
+.container {
+  flex: 1;    /* container takes up remaining available height */
+  display: flex;
+  flex-direction: row;
 }
 
-p {
-  margin: 4px;
+.chart-container {
+  flex: 1 1 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+svg {
+  flex: 1 1 30%;
+  border: 2px solid black;
+}
+
+.side-nav {
+  border: 2px solid black;
+  flex: 1 1 20%;
 }
