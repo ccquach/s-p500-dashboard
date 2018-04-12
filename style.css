@@ -56,13 +56,15 @@ body {
 .dropdown {
   position: relative;
   display: inline-block;
+  width: 100%;
 }
 
 .dropdown-search {
   display: block;
   margin: 0 auto;
 	width: 80%;
-	border: 2px solid #f1f1f1;
+  border: 2px solid #f1f1f1;
+  padding: 1% 5%;
 }
 
 .dropdown-content {
