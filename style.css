@@ -1,5 +1,6 @@
 * {
   font-family: "PT Sans", sans-serif;
+  box-sizing: border-box;
 }
 
 body {
@@ -38,6 +39,34 @@ body {
   flex: 1;    /* container takes up remaining available height */
   display: flex;
   flex-direction: row;
+}
+
+#search,
+#portfolio div {
+  display: block;
+  width: 80%;
+  margin: 20px auto;
+}
+
+.side-nav p {
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+#portfolio {
+  max-height: 50vh;
+  overflow: auto;
+}
+
+#portfolio div {
+  border: 1px solid gainsboro;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+#portfolio div:hover {
+  background-color: gainsboro;
+  color: black;
 }
 
 .chart-container {
