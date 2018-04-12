@@ -26,16 +26,22 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
   d3.select("#max-date")
       .text(`${dateFormat(maxDate)}`);
 
-  // setUpSearch(getTickers(data));
   // createPrice(width, height);
   // drawPrice(getRangeData(data, currentRange, maxDate));
 
-  d3.select("#search")
-    .on("change", () => {
-      var ticker = d3.event.target.value;
-      // add ticker to portfolio and remove from search list
-      updateSearch(ticker);
-      updatePortfolio(ticker);
+  d3.select(".dropdown-search")
+    .on("input focus", () => {
+      var tgt = d3.event.target;
+      if (tgt.value) {
+        createDropdown(tgt.value, data);
+      }
+      d3.select(".dropdown-content").classed("show", tgt.value);
+    })
+    // TODO: arrow key nav options list
+    .on("keydown", () => {
+      if (d3.event.keyCode === 40) {
+        // handleKeyDown();
+      }
     });
 
   // TODO: display selected date range => delegate to radio input on-change event handler

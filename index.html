@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>S&amp;P 500 Dashboard</title>
   <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
   <div id="nav">
     <h2>Standard &amp; Poor's 500 Index</h2>
     <p>Data available for date range between <span id="min-date"></span> and <span id="max-date"></span></p>
@@ -34,22 +36,18 @@
       <span id="percent-return"></span>
     </p>
   </div>
+  
   <div class="container">
     <div class="side-nav">
       <p>Select a ticker:</p>
       <div class=".dropdown">
         <input type="text" class="dropdown-search">
-        <div class="dropdown-content">
-          <div>AAPL</div>
-          <div>WMT</div>
-          <div>AAPL</div>
-          <div>WMT</div>
-          <div>AAPL</div>
-          <div>WMT</div>
-        </div>
+        <ul class="dropdown-content"></ul>
       </div>
       <p>Portfolio:</p>
-      <div id="portfolio"></div>
+      <div class="portfolio">
+				<ul class="portfolio-content"></ul>
+			</div>
     </div>
     <div class="chart-container">
       <svg

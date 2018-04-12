@@ -1,43 +1,58 @@
-function updateSearch(ticker) {
-  var list = d3.selectAll("option").data();
-  // check if ticker is in search list
-  if (list.includes(ticker)) {
-    // if yes, remove ticker
-    var nodes = d3.selectAll("option").nodes();
-    var node = nodes.find(d => d.value === ticker);
-    node.remove();
-  } else {
-    // if no, add ticker
-    list.push(ticker);
-    setUpSearch(list.sort());    
-  }
+function createDropdown(val, data) {
+  var tickers = getTickers(data);
+	const regex = new RegExp(escapeRegex(val), 'gi');
+	var options = tickers.filter(ticker => ticker.match(regex));
+	
+	var update = 
+		d3.select(".dropdown-content")
+			.selectAll(".option")
+			.data(options, d => d);
+	
+	update
+		.exit()
+		.remove();
+	
+	update
+		.enter()
+		.append("li")
+			.classed("option", true)
+			.on("click", () => {
+				var ticker = d3.event.target.textContent;
+				createPortfolio(ticker);
+				d3.select(".dropdown-search").property("value", "");
+				d3.select(".dropdown-content").classed("show", false);
+			})
+		.merge(update)
+			.text(d => d);
 }
 
-function updatePortfolio(ticker) {
-  // add ticker to portfolio
-  d3.select("#portfolio")
-    .append("div")
-      .text(ticker)
-      .on("click", () => {
-        updateSearch(d3.event.target.textContent);
-        d3.event.target.remove();
-        // TODO: update graph
-      })
+function createPortfolio(ticker) {
+  var portfolio = d3.selectAll(".holding").data();
+  // don't add ticker if already in portfolio
+	if (!portfolio.includes(ticker)) {
+		portfolio.push(ticker);
+		d3.select(".portfolio-content")
+			.selectAll(".holding")
+			.data(portfolio, d => d)
+			.enter()
+			.append("li")
+				.classed("holding", true)
+				.text(d => d)
+				.on("click", function() {
+					d3.select(this).remove();
+				});
+	}
 }
 
-function setUpSearch(data) {
-  var update = 
-    d3.select("#search")
-      .selectAll("option")
-      .data(data, d => d);
+// function handleKeyDown() {
+// 	var active = d3.select(".active");
+// 	debugger
+// 	if (!active) {
+// 		d3.select(".option")
+// 				.classed("active", true);
+// 	}
+// }
 
-  update
-    .exit()
-    .remove();
-
-  update
-    .enter()
-    .append("option")
-      .property("value", d => d)
-      .text(d => d);
-}
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
