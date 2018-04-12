@@ -41,11 +41,52 @@ body {
   flex-direction: row;
 }
 
-#search,
 #portfolio div {
   display: block;
   width: 80%;
   margin: 20px auto;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown * {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.dropdown-search {
+  display: block;
+  /* margin: 0 auto; */
+}
+
+.dropdown-content {
+  /* margin: 0 auto; */
+  border: 2px solid red;
+  /* display: none; */
+  /* position: absolute; */
+  background-color: #f1f1f1;
+  /* min-width: 80%; */
+  max-height: 30vh;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content div {
+  color: #000;
+  padding: 10px 14px;
+}
+
+.dropdown-content div:hover {
+  background-color: #aaaaaa;
+  color: #fff;
+}
+
+.show {
+  display: block;
 }
 
 .side-nav p {

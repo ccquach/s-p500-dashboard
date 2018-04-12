@@ -26,7 +26,7 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
   d3.select("#max-date")
       .text(`${dateFormat(maxDate)}`);
 
-  setUpSearch(getTickers(data));
+  // setUpSearch(getTickers(data));
   // createPrice(width, height);
   // drawPrice(getRangeData(data, currentRange, maxDate));
 
