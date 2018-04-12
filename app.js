@@ -16,7 +16,7 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
   var currentRange = +d3.select('input[name="date-range"]:checked').property("value");
   
   var width = d3.select(".chart-container").node().offsetWidth;
-  var height = 200;
+  var height = d3.select(".chart-container").node().offsetHeight / 3;
 
   // display available data date range
   var dateFormat = d3.timeFormat("%b %d, %Y");
@@ -26,9 +26,10 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
   d3.select("#max-date")
       .text(`${dateFormat(maxDate)}`);
 
-  // createPrice(width, height);
-  // drawPrice(getRangeData(data, currentRange, maxDate));
-
+  createPortfolio("AAPL");  // default starting portfolio
+  createPrice(width, height);
+  drawGraphs(data, currentRange, maxDate);
+  
   d3.select(".dropdown-search")
     .on("input focus", () => {
       var tgt = d3.event.target;
@@ -48,12 +49,17 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
   d3.selectAll('input[name="date-range"]')
     .on("change", () => {
       currentRange = +d3.event.target.value;
-      // drawPrice(getRangeData(data, currentRange, maxDate));
+      drawGraphs(data, currentRange, maxDate);
     });
 })
 .catch(function(error) {
   throw error
 });
+
+function drawGraphs(data, range, maxDate) {
+  var rangeData = getRangeData(data, range, maxDate)
+  drawPrice(rangeData);
+}
 
 function getTickers(data) {
   var tickersNest = 
