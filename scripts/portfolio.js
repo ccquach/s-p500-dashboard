@@ -1,6 +1,6 @@
 function createDropdown(val, data) {
   var tickers = getTickers(data);
-	const regex = new RegExp(escapeRegex(val), 'gi');
+	const regex = new RegExp('^' + escapeRegex(val), 'gi');
 	var options = tickers.filter(ticker => ticker.match(regex));
 	
 	var update = 
