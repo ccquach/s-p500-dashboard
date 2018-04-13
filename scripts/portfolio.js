@@ -16,17 +16,11 @@ function createDropdown(val, data) {
 		.enter()
 		.append("li")
 			.classed("option", true)
-			.on("click", () => {
-				var ticker = d3.event.target.textContent;
-				createPortfolio(ticker);
-				d3.select(".dropdown-search").property("value", "");
-				d3.select(".dropdown-content").classed("show", false);
-			})
 		.merge(update)
 			.text(d => d);
 }
 
-function createPortfolio(ticker) {
+function createPortfolio(ticker, data) {
   var portfolio = d3.selectAll(".holding").data();
   // don't add ticker if already in portfolio
 	if (!portfolio.includes(ticker)) {
@@ -38,9 +32,6 @@ function createPortfolio(ticker) {
 			.append("li")
 				.classed("holding", true)
 				.text(d => d)
-				.on("click", function() {
-					d3.select(this).remove();
-				});
 	}
 }
 
