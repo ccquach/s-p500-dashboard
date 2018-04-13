@@ -142,3 +142,7 @@ svg {
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+
+.label {
+  font-size: 0.8em;
+}

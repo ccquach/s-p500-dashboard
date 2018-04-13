@@ -27,7 +27,7 @@ function drawPrice(range, tickers) {
   var price = d3.select("#price");
   var padding = {
     top: 15,
-    right: 30,
+    right: 40,
     bottom: 30,
     left: 50
   };
@@ -73,8 +73,8 @@ function drawPrice(range, tickers) {
       
   // draw graph
   var t =
-      d3.transition()
-        .duration(1000);
+    d3.transition()
+      .duration(1000);
 
   var line =
     d3.line()
@@ -85,36 +85,66 @@ function drawPrice(range, tickers) {
     price
       .selectAll(".ticker-price")
       .data(tickers, d => d.key);
+  
+  // update
+  update
+    .selectAll(".line")
+    .transition(t)
+    .attr("d", d => line(d.values))
+    .style("stroke", d => zScale(d.key));
 
-  // TODO: transition line fading out
+  update
+    .selectAll(".label")
+    .transition(t)
+    .attr("transform", d => `translate(${xScale(d.value.date)}, ${yScale(d.value.close)})`);
+
+  // exit
   update
     .exit()
-    // .transition(t)
-    // .attr("d", "M0 0")
-    .remove();
+    .transition(t)
+      .style("opacity", 0)
+      .remove();
 
+  // enter
   var tickerGrp =
     update
       .enter()
       .append("g")
         .classed("ticker-price", true);
 
-  // var path =
-  tickerGrp
-    .append("path")
-      .classed("line", true)
-    .merge(price.selectAll(".line"))
-      .transition(t)
+  var path =
+    tickerGrp
+      .append("path")
+        .classed("line", true)
         .attr("d", d => line(d.values))
         .style("stroke", d => zScale(d.key));
+  
+  path
+    .each(function(d) {
+      d.totalLength = this.getTotalLength()
+    })
+    .attr("stroke-dasharray", d => d.totalLength + " " + d.totalLength)
+    .attr("stroke-dashoffset", d => d.totalLength)
+    .transition()
+      .duration(2000)
+      .ease(d3.easeLinear)
+      .attr("stroke-dashoffset", 0)
+    .on("end", () => {
+      labels
+        .transition()
+        .delay(function(d, i) { return i * 250; })
+        .style("opacity", 1);
+    });
 
-  // var totalLength = path.node().getTotalLength();
-  // debugger
-  // path
-  //     .attr("stroke-dasharray", totalLength+","+totalLength)
-  //     .attr("stroke-dashoffset", totalLength)
-  //     .transition()
-  //     .duration(2000)
-  //     .ease("linear-in-out")
-  //     .attr("stroke-dashoffset", 0);
+  var labels =
+    tickerGrp
+      .append("text")
+      .datum(function(d) { return {key: d.key, value: d.values[d.values.length - 1]} })
+        .classed("label", true)
+        .attr("transform", d => `translate(${xScale(d.value.date)}, ${yScale(d.value.close)})`)
+        .attr("x", 3)
+        .attr("dy", "0.35em")
+        .style("stroke", d => zScale(d.key))
+        .style("opacity", 0)
+        .text(d => d.key);
 }
