@@ -74,7 +74,8 @@ function drawPrice(range, tickers) {
   update
     .selectAll(".label")
     .transition(t)
-    .attr("transform", d => `translate(${xScale(d.value.date)}, ${yScale(d.value.close)})`);
+    .attr("transform", d => `translate(${xScale(d.value.date)}, ${yScale(d.value.close)})`)
+    .style("stroke", d => zScale(d.key));
 
   // exit
   update
@@ -104,6 +105,9 @@ function drawPrice(range, tickers) {
     .attr("stroke-dasharray", d => d.totalLength + " " + d.totalLength)
     .attr("stroke-dashoffset", d => d.totalLength)
     .transition()
+      .on("start", () => {
+        d3.select(".dropdown-search").attr("disabled", true);
+      })
       .duration(2000)
       .ease(d3.easeLinear)
       .attr("stroke-dashoffset", 0)
@@ -111,7 +115,10 @@ function drawPrice(range, tickers) {
       labels
         .transition()
         .delay(function(d, i) { return i * 250; })
-        .style("opacity", 1);
+        .style("opacity", 1)
+        .on("end", () => {
+          d3.select(".dropdown-search").attr("disabled", null);
+        });
     });
 
   var labels =

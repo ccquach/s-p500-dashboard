@@ -1,10 +1,12 @@
 function drawGraph(data, range, maxDate, type) {
-  debugger
   var dataArray = getRangeData(data, range, maxDate);
   var dateRange = dataArray[0];
   var rangeData = dataArray[1];
-  if (type === "price") drawPrice(dateRange, rangeData);
-  else drawReturn(dateRange, rangeData);
+
+  var chart;
+  if (type === "price") chart = drawPrice;
+  else chart = drawReturn;
+  chart(dateRange, rangeData);
 }
 
 function getTickers(data) {
