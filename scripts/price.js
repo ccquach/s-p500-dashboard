@@ -1,38 +1,15 @@
-function createPrice(width, height) {
-  var price =
-    d3.select("#price")
-        .attr("width", width)
-        .attr("height", height);
-  
-  price
-    .append("g")
-      .classed("x-axis", true);
-
-  price
-    .append("g")
-      .classed("y-axis", true)
-    .append("text")
-      .classed("y-axis-label", true)
-      .attr("fill", "#000")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", "0.71em")
-      .attr("text-anchor", "end")
-      .text("Price ($)");
-}
-
 function drawPrice(range, tickers) {
   // TODO: d3.area? https://github.com/d3/d3-shape#curves
   console.log(tickers);
-  var price = d3.select("#price");
+  var svg = d3.select("svg");
   var padding = {
     top: 15,
     right: 40,
     bottom: 30,
     left: 50
   };
-  var width = +price.attr("width");
-  var height = +price.attr("height");
+  var width = +svg.attr("width");
+  var height = +svg.attr("height");
 
   // format data
   tickers.forEach(ticker => {
@@ -70,6 +47,7 @@ function drawPrice(range, tickers) {
 
   d3.select(".y-axis-label")
       .attr("x", -padding.top)
+      .text("Price ($)");
       
   // draw graph
   var t =
@@ -82,8 +60,8 @@ function drawPrice(range, tickers) {
       .y(d => yScale(d.close));
 
   var update =
-    price
-      .selectAll(".ticker-price")
+    svg
+      .selectAll(".group")
       .data(tickers, d => d.key);
   
   // update
@@ -110,7 +88,7 @@ function drawPrice(range, tickers) {
     update
       .enter()
       .append("g")
-        .classed("ticker-price", true);
+        .classed("group", true);
 
   var path =
     tickerGrp

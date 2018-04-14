@@ -23,8 +23,8 @@ body {
   margin: 0;
 }
 
-#nav input {
-  margin-left: 20px;
+#nav select {
+  margin: 5px 20px 5px 10px;
 }
 
 #nav p {
@@ -42,7 +42,6 @@ body {
 }
 
 .side-nav {
-  border: 2px solid black;
   flex: 1 5 20%;
   min-width: 100px;
   max-width: 200px;
@@ -128,19 +127,10 @@ li:hover {
   flex-direction: column;
 }
 
-svg {
-  flex: 1 1 30%;
-  border: 2px solid black;
-}
-
-.x-axis path {
-  display: none;
-}
-
 .line {
   fill: none;
   stroke: steelblue;
-  stroke-width: 1.5px;
+  stroke-width: 2px;
 }
 
 .label {
