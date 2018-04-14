@@ -107,6 +107,8 @@ function drawPrice(range, tickers) {
     .transition()
       .on("start", () => {
         d3.select(".dropdown-search").attr("disabled", true);
+        d3.selectAll("select").attr("disabled", true);
+        d3.selectAll(".holding").style("pointer-events", "none");
       })
       .duration(2000)
       .ease(d3.easeLinear)
@@ -118,6 +120,8 @@ function drawPrice(range, tickers) {
         .style("opacity", 1)
         .on("end", () => {
           d3.select(".dropdown-search").attr("disabled", null);
+          d3.selectAll("select").attr("disabled", null);
+          d3.selectAll(".holding").style("pointer-events", null);
         });
     });
 
