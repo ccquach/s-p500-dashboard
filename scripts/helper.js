@@ -45,6 +45,12 @@ function getRangeData(data, range, maxDate) {
   return [d3.extent(rangeData, d => d.date), groupedData];
 }
 
+function displayDateRange(range, maxDate) {
+  var minDate = getMinDate(range, maxDate);
+  d3.select("#date-range-display")
+      .text(`${dateFormat(minDate)} to ${dateFormat(maxDate)}`);
+}
+
 function getMinDate(range, maxDate) {
   var minDate = new Date(maxDate);
   minDate.setMonth(maxDate.getMonth() - range);
@@ -53,4 +59,8 @@ function getMinDate(range, maxDate) {
 
 function parseDateDisplay(d) {
   return d3.timeParse("%b %d, %Y")(d);
+}
+
+function dateFormat(d) {
+  return d3.timeFormat("%b %d, %Y")(d);
 }

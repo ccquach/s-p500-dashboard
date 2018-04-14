@@ -21,13 +21,13 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
   var height = Math.floor(chartContainer.offsetHeight);
   
   // display available data date range
-  var dateFormat = d3.timeFormat("%b %d, %Y");
   d3.select("#min-date")
       .text(`${dateFormat(minDate)}`);
 
   d3.select("#max-date")
       .text(`${dateFormat(maxDate)}`);
 
+  displayDateRange(currentRange, maxDate);
   createChart(width, height);
   createPortfolio("AAPL", data);  // default starting portfolio
   drawGraph(data, currentRange, maxDate, currentChartType);
@@ -36,14 +36,13 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
   d3.select("#date-range")
     .on("change", () => {
       currentRange = +d3.event.target.value;
-      debugger
+      displayDateRange(currentRange, maxDate);
       drawGraph(data, currentRange, maxDate, currentChartType);
     });
 
   d3.select("#chart-type")
     .on("change", () => {
       currentChartType = d3.event.target.value;
-      debugger
       drawGraph(data, currentRange, maxDate, currentChartType);
     })
   
@@ -71,7 +70,6 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
     var isOption = tgtSelection.classed("option");
     var isHolding = tgtSelection.classed("holding");
     var range = +d3.select("#date-range").property("value");
-    var maxDate = parseDateDisplay(d3.select("#max-date").node().textContent);
     
     if (isOption) {
       var ticker = tgt.textContent;
@@ -82,7 +80,6 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
       d3.select(tgt.remove());
     }
     if (isOption || isHolding) {
-      debugger
       drawGraph(data, range, maxDate, currentChartType);
     }
   }
