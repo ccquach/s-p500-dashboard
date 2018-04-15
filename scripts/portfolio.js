@@ -35,6 +35,20 @@ function createPortfolio(ticker, data) {
 	}
 }
 
+function getTickers(data) {
+  var tickersNest = 
+    d3.nest()
+      .key(d => d.ticker)
+      .entries(data);
+
+  var tickers = [""];
+  for (i in tickersNest) {
+    var ticker = tickersNest[i].key;
+    if (!tickers.includes(ticker)) tickers.push(ticker);
+  }
+  return tickers;
+}
+
 // function handleKeyDown() {
 // 	var active = d3.select(".active");
 // 	debugger

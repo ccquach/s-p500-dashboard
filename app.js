@@ -30,20 +30,20 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
   displayDateRange(currentRange, maxDate);
   createChart(width, height);
   createPortfolio("AAPL", data);  // default starting portfolio
-  drawGraph(data, currentRange, maxDate, currentChartType);
+  drawGraph(data, currentRange, currentChartType);
 
-  // TODO: display selected date range => delegate to radio input on-change event handler
+  // user input handlers
   d3.select("#date-range")
     .on("change", () => {
       currentRange = +d3.event.target.value;
       displayDateRange(currentRange, maxDate);
-      drawGraph(data, currentRange, maxDate, currentChartType);
+      drawGraph(data, currentRange, currentChartType);
     });
 
   d3.select("#chart-type")
     .on("change", () => {
       currentChartType = d3.event.target.value;
-      drawGraph(data, currentRange, maxDate, currentChartType);
+      drawGraph(data, currentRange, currentChartType);
     })
   
   d3.select(".dropdown-search")
@@ -80,7 +80,7 @@ d3.csv("./data/all_stocks_5yr.csv", function(row) {
       d3.select(tgt.remove());
     }
     if (isOption || isHolding) {
-      drawGraph(data, range, maxDate, currentChartType);
+      drawGraph(data, range, currentChartType);
     }
   }
 })
