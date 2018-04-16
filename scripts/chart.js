@@ -44,7 +44,7 @@ function drawGraph(data, range, type) {
   // console.log(tickers);
   var maxRange = parseDateDisplay(d3.select("#max-date").node().textContent);
   var minRange = getMinDate(range, maxRange);
-  var rangeData = getRangeData(data, minRange, maxRange);
+  var rangeData = getRangeData(data, minRange);
   var dateRange = rangeData[0];
   var svg = d3.select("svg");
   var padding = {
@@ -333,25 +333,4 @@ function formatData(tickers, type) {
     }, []);
   })
   return tickers;
-}
-
-function getRangeData(data, minDate, maxDate) {
-  // get portfolio tickers
-  var tickers = d3.selectAll(".holding").data();
-  
-  // filter data
-  var rangeData = [];
-  for (var i = 0; i < tickers.length; i++) {
-    data.filter(d => d.ticker === tickers[i] && d.date >= minDate).reduce((acc, next) => {
-      acc.push(next);
-      return acc;
-    }, rangeData);
-  }
-  
-  // group data
-  var groupedData = 
-    d3.nest()
-      .key(d => d.ticker)
-      .entries(rangeData);
-  return [d3.extent(rangeData, d => d.date), groupedData];
 }
