@@ -117,8 +117,8 @@ function drawGraph(data, range, type) {
 
   update.select(".label")
     .datum(function(d) { return {key: d.key, value: d.values[d.values.length - 1]} })
-    .style("stroke", d => zScale(d.key))
     .transition(lineT)
+      .style("stroke", d => zScale(d.key))
       .attr("transform", d => `translate(${xScale(d.value.date)}, ${yScale(d.value.amount)})`);
 
   // exit
