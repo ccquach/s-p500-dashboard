@@ -12,6 +12,7 @@ body {
   overflow: auto;
 }
 
+/* main navigation styles */
 #nav {
   background-color: #37474f;
   color: #ffffff;
@@ -39,12 +40,14 @@ body {
   margin-left: 10px;
 }
 
+/* main content styles */
 .container {
   flex: 1;    /* container takes up remaining available height */
   display: flex;
   flex-direction: row;
 }
 
+/* side navigation styles */
 .side-nav {
   flex: 1 5 20%;
   min-width: 100px;
@@ -56,6 +59,7 @@ body {
   margin-left: 15px;
 }
 
+/* search dropdown styles */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -105,6 +109,7 @@ li:hover {
 	padding: 0;
 }
 
+/* portfolio styles */
 .portfolio {
   max-height: 50vh;
   overflow: auto;
@@ -125,18 +130,41 @@ li:hover {
   color: black;
 }
 
+/* chart styles */
 .chart-container {
   flex: 5 0 80%;
   display: flex;
   flex-direction: column;
 }
 
+.x-axis path {
+  display: none;
+}
+
 .line {
   fill: none;
   stroke: steelblue;
-  stroke-width: 2px;
+  stroke-width: 1.5px;
 }
 
 .label {
   font-size: 0.8em;
+}
+
+/* mouse-over line styles */
+.mouse-line {
+  stroke: #546e7a;
+  stroke-width: 1.5px;
+  opacity: 0;
+}
+
+.mouse-per-line circle {
+  fill: none;
+  stroke-width: 1.5px;
+  opacity: 0;
+}
+
+.mouse-over-effects rect {
+  fill: none;
+  pointer-events: all;
 }

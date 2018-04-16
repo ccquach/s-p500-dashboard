@@ -18,6 +18,19 @@ function createChart(width, height) {
       .attr("y", 6)
       .attr("dy", "0.71em")
       .attr("text-anchor", "end");
+
+  // mouse over effects
+  var mouseG =
+    svg
+      .append("g")
+      .classed("mouse-over-effects", true);
+
+  mouseG
+    .append("path")   // black vertical line following mouse
+      .classed("mouse-line", true);
+
+  mouseG
+    .append("rect");   // catch mouse movements on canvas
 }
 
 function drawGraph(data, range, type) {
@@ -92,7 +105,7 @@ function drawGraph(data, range, type) {
 
   var update =
     svg
-      .selectAll(".group")
+      .selectAll(".line-group")
       .data(tickerData, d => d.key);
   
   // update
@@ -100,7 +113,6 @@ function drawGraph(data, range, type) {
     .transition(lineT)
       .attr("stroke-dasharray", null)
       .attr("d", d => line(d.values));
-        
 
   update.select(".label")
     .datum(function(d) { return {key: d.key, value: d.values[d.values.length - 1]} })
@@ -119,7 +131,7 @@ function drawGraph(data, range, type) {
     update
       .enter()
       .append("g")
-        .classed("group", true);
+        .classed("line-group", true);
 
   var path =
     tickerGrp
@@ -166,6 +178,90 @@ function drawGraph(data, range, type) {
         .style("stroke", d => zScale(d.key))
         .style("opacity", 0)
         .text(d => d.key);
+
+  // mouse over effects
+  var lines = d3.selectAll(".line").nodes(),
+      mouseG = d3.select(".mouse-over-effects");
+  
+  // create markers
+  var mousePerLineUpdate=
+    mouseG
+      .selectAll(".mouse-per-line")
+      .data(tickerData, d => d.key);
+
+  mousePerLineUpdate
+    .exit()
+    .remove();
+
+  var mousePerLine =
+    mousePerLineUpdate
+      .enter()
+      .append("g")
+      .classed("mouse-per-line", true);
+
+  mousePerLine
+    .append("circle")
+    .attr("r", 7)
+    .attr("stroke", d => zScale(d.key));
+
+  mousePerLine
+    .append("text")
+      .attr("transform", "translate(10, 3)");
+
+  // capture mouse events
+  var mouseLine = d3.select(".mouse-line"),
+      mouseLineCircle = d3.selectAll(".mouse-per-line circle"),
+      mouseLineText = d3.selectAll(".mouse-per-line text");
+    
+  mouseG.select("rect")
+    .attr("width", width - padding.left - padding.right)
+    .attr("height", height - padding.top - padding.bottom)
+    .attr("transform", `translate(${padding.left}, ${padding.top})`)
+    .on("mouseout", () => {   // hide
+      mouseLine.style("opacity", 0);
+      mouseLineCircle.style("opacity", 0);
+      mouseLineText.style("opacity", 0);
+    })   
+    .on("mouseover", () => {  // show
+      mouseLine.style("opacity", 1);
+      mouseLineCircle.style("opacity", 1);
+      mouseLineText.style("opacity", 1);
+    })
+    .on("mousemove", function() {
+      var mouse = d3.mouse(this),
+          mouseX = mouse[0] + padding.left;
+      
+      // draw mouse line
+      d3.select(".mouse-line")
+        .attr("d", () => `
+          M${mouseX},${height - padding.bottom} 
+          ${mouseX},${padding.top}
+        `);
+
+      // position markers on ticker lines
+      d3.selectAll(".mouse-per-line")
+        .attr("transform", function(d, i) {
+          var beginning = 0,
+              end = lines[i].getTotalLength(),
+              target = null;
+
+          while (true) {
+            target = Math.floor((beginning + end) / 2);
+            pos = lines[i].getPointAtLength(target);
+            if ((target === end || target === beginning) && pos.x !== mouse[0]) break;
+            if (pos.x > mouseX) end = target;
+            else if (pos.x < mouseX) beginning = target;
+            else break; // position found
+          }
+
+          var formatValue = d3.format(",.2f");
+          d3.select(this)
+            .select("text")
+              .text(formatValue(yScale.invert(pos.y)));
+
+          return `translate(${mouseX}, ${pos.y})`;
+        })
+    })
 }
 
 function formatData(tickers, type) {
