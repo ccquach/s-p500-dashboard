@@ -4,6 +4,7 @@ function createChart(width, height) {
         .attr("width", width)
         .attr("height", height);
   
+  // axis
   svg
     .append("g")
       .classed("x-axis", true);
@@ -18,6 +19,11 @@ function createChart(width, height) {
       .attr("y", 6)
       .attr("dy", "0.71em")
       .attr("text-anchor", "end");
+
+  // legend
+  svg
+    .append("g")
+      .classed("legend", true);
 
   // mouse over effects
   var mouseG =
@@ -45,17 +51,18 @@ function drawGraph(data, range, type) {
     top: 15,
     right: 40,
     bottom: 30,
-    left: 50
+    left: 50,
+    legend: 150
   };
   var width = +svg.attr("width");
   var height = +svg.attr("height");
   var tickerData = formatData(rangeData[1], type);
   
-  // axis
+  // scales
   var xScale =
     d3.scaleTime()
       .domain(dateRange)
-      .rangeRound([padding.left, width - padding.right]);
+      .rangeRound([padding.left, width - padding.right - padding.legend]);
 
   var yScale =
     d3.scaleLinear()
@@ -69,6 +76,7 @@ function drawGraph(data, range, type) {
     d3.scaleOrdinal(d3.schemeCategory10)
       .domain(tickerData.map(d => d.key));
 
+  // axis
   var axisT =
     d3.transition()
       .duration(1000)
@@ -181,6 +189,43 @@ function drawGraph(data, range, type) {
         .style("opacity", 0)
         .text(d => d.key);
 
+  // legend
+  var legendUpdate =
+    svg
+      .select(".legend")
+      .selectAll(".legend-item")
+      .data(tickerData, d => d.key);
+
+  legendUpdate
+    .exit()
+    .remove();
+  
+  var itemUpdate =
+    legendUpdate
+      .enter()
+      .append("g")
+        .classed("legend-item", true);
+
+  itemUpdate
+    .append("rect")
+      .attr("x", width - 150)
+      .attr("y", (d, i) => i * 20 + padding.top)
+      .attr("width", 10)
+      .attr("height", 10)
+    .merge(legendUpdate.select("rect"))
+      .transition(lineT)
+      .attr("y", (d, i) => i * 20 + padding.top)
+      .attr("fill", d => zScale(d.key));
+
+  itemUpdate
+    .append("text")
+      .attr("x", width - 130)
+      .attr("y", (d, i) => (i * 20) + 9 + padding.top)
+    .merge(legendUpdate.select("text"))
+      .transition(lineT)
+      .attr("y", (d, i) => (i * 20) + 9 + padding.top)
+      .text(d => d.key);
+
   // mouse over effects
   var mouseG = d3.select(".mouse-over-effects");
   
@@ -219,7 +264,7 @@ function drawGraph(data, range, type) {
       mouseLineText = d3.selectAll(".mouse-per-line text");
     
   mouseG.select("rect")
-    .attr("width", width - padding.left - padding.right)
+    .attr("width", width - padding.left - padding.right - padding.legend)
     .attr("height", height - padding.top - padding.bottom)
     .attr("transform", `translate(${padding.left}, ${padding.top})`)
     .on("mouseout", () => {   // hide
@@ -244,9 +289,11 @@ function drawGraph(data, range, type) {
         `);
 
       // position markers on ticker lines
-      var lines = d3.selectAll(".line").nodes();
       d3.selectAll(".mouse-per-line")
         .attr("transform", function(d, i) {
+          var lines = d3.selectAll(".line").nodes(),
+              legendItems = d3.selectAll(".legend-item text").nodes();
+
           var beginning = 0,
               end = lines[i].getTotalLength(),
               target = null;
@@ -261,9 +308,7 @@ function drawGraph(data, range, type) {
           }
 
           var formatValue = d3.format(",.2f");
-          d3.select(this)
-            .select("text")
-              .text(formatValue(yScale.invert(pos.y)));
+          legendItems[i].textContent = `${d.key} ${formatValue(yScale.invert(pos.y))}`;
 
           return `translate(${mouseX}, ${pos.y})`;
         })
