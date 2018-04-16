@@ -112,10 +112,12 @@ function drawGraph(data, range, type) {
   update.select(".line")
     .transition(lineT)
       .attr("stroke-dasharray", null)
-      .attr("d", d => line(d.values));
+      .attr("d", d => line(d.values))
+      .style("stroke", d => zScale(d.key));
 
   update.select(".label")
     .datum(function(d) { return {key: d.key, value: d.values[d.values.length - 1]} })
+    .style("stroke", d => zScale(d.key))
     .transition(lineT)
       .attr("transform", d => `translate(${xScale(d.value.date)}, ${yScale(d.value.amount)})`);
 
@@ -187,6 +189,10 @@ function drawGraph(data, range, type) {
     mouseG
       .selectAll(".mouse-per-line")
       .data(tickerData, d => d.key);
+
+  mousePerLineUpdate
+    .select("circle")
+      .style("stroke", d => zScale(d.key));
 
   mousePerLineUpdate
     .exit()
