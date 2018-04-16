@@ -142,6 +142,7 @@ li:hover {
 }
 
 .line {
+  pointer-events: none;
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
@@ -159,6 +160,7 @@ li:hover {
 }
 
 .mouse-per-line circle {
+  pointer-events: none;
   fill: none;
   stroke-width: 1.5px;
   opacity: 0;
