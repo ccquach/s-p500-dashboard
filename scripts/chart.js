@@ -277,8 +277,10 @@ function drawGraph(data, range, type) {
       mouseLineCircle.style("opacity", 1);
       mouseLineText.style("opacity", 1);
     })
-    .on("mousemove", function() {
-      var mouse = d3.mouse(this),
+    .on("mousemove", mousemove);
+
+  function mousemove() {
+    var mouse = d3.mouse(this),
           mouseX = mouse[0] + padding.left;
       
       // draw mouse line
@@ -312,7 +314,7 @@ function drawGraph(data, range, type) {
 
           return `translate(${mouseX}, ${pos.y})`;
         })
-    })
+  }
 }
 
 function formatData(tickers, type) {
