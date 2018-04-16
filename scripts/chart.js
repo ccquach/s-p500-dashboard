@@ -180,8 +180,7 @@ function drawGraph(data, range, type) {
         .text(d => d.key);
 
   // mouse over effects
-  var lines = d3.selectAll(".line").nodes(),
-      mouseG = d3.select(".mouse-over-effects");
+  var mouseG = d3.select(".mouse-over-effects");
   
   // create markers
   var mousePerLineUpdate=
@@ -239,6 +238,7 @@ function drawGraph(data, range, type) {
         `);
 
       // position markers on ticker lines
+      var lines = d3.selectAll(".line").nodes();
       d3.selectAll(".mouse-per-line")
         .attr("transform", function(d, i) {
           var beginning = 0,
